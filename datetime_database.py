@@ -49,6 +49,9 @@ class DatetimeDatabase(object):
             self.sorted_dates = sorted(self.dates.iterkeys())
         return self.sorted_dates[key]
 
+    def __len__(self):
+        return len(self.dates)
+
     def set(self, datetime, value):
         """
         :param datetime: If date is specified format must be -> "24/03/2015" (name of format dd/mm/YYYY)
@@ -92,11 +95,7 @@ class DatetimeDatabase(object):
             self.sorted_dates = sorted(self.dates.iterkeys())
         datetime = self._get_datetime(datetime)
 
-        result_list = []
-        for dict_date in self.dates.iterkeys():
-            if comparator(datetime, dict_date):
-                result_list.append(dict_date)
-        return result_list
+        return filter(lambda dict_date: comparator(datetime, dict_date), self.dates.iterkeys())
 
     def _get_datetime(self, date_str):
         return datetime.strptime(date_str, self.format_string)
